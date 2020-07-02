@@ -1,0 +1,61 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+    Flack
+{% endblock %}
+
+{% block head %}
+<script>
+{
+    document.addEventListener('DOMContentLoaded', () => {
+ 
+        // By default, submit button is disabled
+        document.querySelector('#user_login_btn').disabled = true;
+
+        // Enable button only if there is text in the input field
+        document.querySelector('#user_name').onkeyup = () => {
+            if (document.querySelector('#user_name').value.length > 0)
+                document.querySelector('#user_login_btn').disabled = false;
+            else
+                document.querySelector('#user_login_btn').disabled = true;
+        };
+    });
+    document.querySelector('#user_name').addEventListener("keydown", event => 
+          {
+            if (event.key == "Enter") 
+            {
+              document.getElementById("user_login_btn").click();
+            }
+          });
+}
+</script>
+
+
+{% endblock %}
+
+{% block main %}
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+
+<img src="../static/gappamar.png" width="60" height="60" alt="Gappamar">
+<h3>Welcome to Flack</h3>    
+<div item-align="center">
+</div>
+
+</nav>
+
+<div id="main_body" class="col-lg-11 col-sm-11 alert alert-dark" id= "msgbox" style="width:96%; margin-left:3.5%; margin-right:2.5%; height:95vh; ">
+
+    <h6 style="text-align: center;">{{message}}</h6>
+    <h4 style="text-align: center;">Just Enter your username and Enjoy chatting!</h4></a>
+<br>
+
+<form action ="/signin"  method="POST" style="width:66%; margin-left:33%; margin-right:33%;"><!--action="/signin"-->
+    <div class="form-group">
+        <input type="text" class="form-control" id="user_name" name="username" autofocus aria-describedby="userHelp" style="width:50%; align-items: center;" placeholder="username" placeholder.text-align="center">
+        
+    </br>    
+    <button id="user_login_btn" class="btn btn-primary" type="submit"  style="width:50%; align-items: center;">Sign In</button>
+</div>
+</form>
+
+{% endblock %}

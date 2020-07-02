@@ -1,0 +1,61 @@
+{% extends "main_template.html" %}
+
+{% block head %}
+<script>
+  document.addEventListener('DOMContentLoaded', () =>
+  {
+   
+    document.querySelector('#creat_channel_btn').disabled = true;
+    document.querySelector('#creat_newChannel').onkeyup = () => 
+      {
+          if (document.querySelector('#creat_newChannel').value.length > 0)
+            {document.querySelector('#creat_channel_btn').disabled = false;}
+          else
+            {document.querySelector('#creat_channel_btn').disabled = true;}
+      }
+  
+      document.querySelector('#creat_newChannel').addEventListener("keydown", event => 
+        {
+          if (event.key == "Enter") 
+          {
+            document.getElementById("creat_channel_btn").click();
+          }
+        });
+});
+</script>
+{% endblock %}
+
+{{message}}
+
+{% block main %}
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#"><img src="../static/gappamar.png" width="60" height="60" alt="Gappamar"></a>
+    <h5>Welcome to Flack</h5>    
+    <div>
+        <button type="button" class="btn btn-success">User: {{session.username}}</button>
+        <button type="button" class="btn btn-danger" ><a a href="/logout">Logout</a>  </button>
+</div>
+        
+</nav>
+
+
+<div id="main_body" class="col-lg-11 col-sm-11 alert alert-dark" id= "msgbox" style="width:96%; margin-left:3.5%; margin-right:2.5%; height:95vh; ">
+
+<br><br> 
+  <h4 style="text-align: center;">Creat channel to start chat !!</h4></a>
+<br><br>
+<form class="form-group" action="/create_channel" method="POST" style="width:66%; margin-left:auto; margin-right:auto;">
+  <div class="form-group">
+
+        <input  class="form-control" type="text"  placeholder="channel name" text-align="center" id="creat_newChannel" name="channel">
+        <small class="form-text text-muted"id="userHelp" text-align="center" style="margin-left:auto; margin-right:auto;">Please enter your channel to chat!</small>
+    <button  class="btn btn-secondary" type="submit" id="creat_channel_btn" style="width:100%; margin-left:auto; margin-right:auto;">Creat Channel</button>
+  </div>
+</form>
+<br> <br> 
+
+<button type="button" id="user_login_btn" class="btn btn-dark" style="width:66%; margin-left:17%; margin-right:16%;"><a a href="/leave_channel">Cancel</a></button>
+
+
+{% endblock %}

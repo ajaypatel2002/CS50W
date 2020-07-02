@@ -1,0 +1,63 @@
+{% extends "main_template.html" %}
+
+{% block title %}
+{{ session.current_channel }}
+<script>
+    document.addEventListener('DOMContentLoaded', () => 
+        {
+            socket.on('connect', () => 
+            {
+                document.querySelectorAll('li').forEach(li => 
+                {
+                    li.onclick = () => 
+                    {
+                        const channel = li.dataset.channel;
+                        alert(`${channel}`)
+                        socket.emit('join', {'channel': channel});
+                    };
+                });
+                document.querySelector('#newChannel').addEventListener('click', () => 
+                {
+                    alert(`${channel}`)
+                    localStorage.removeItem('last_channel');
+                    socket.emit('join',channel);
+                });
+            });
+        });
+
+my_function()
+{
+    //to select randome div style=======================================
+    const myStyle = ['alert alert-primary', 'alert alert-success', 'alert alert-danger', 'alert alert-warning', 'alert alert-info', 'alert alert-light', 'alert alert-dark'];
+    const mySelectedStyle = myStyle[Math.floor(Math.random() * myStyle.length)];
+    return mySelectedStyle;
+    //to select randome div style=======================================
+}
+</script>
+{% endblock %}
+
+{%block menu%}
+{%endblock%}
+
+{% block main %}
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="/"><img src="../static/gappamar.png" width="60" height="60" alt="Gappamar"></a>
+<div>
+        <button type="button" class="btn btn-success">User: {{session.username}}</button>
+        <button type="button" class="btn btn-danger" ><a a href="/logout">Logout</a>  </button>
+</div>  
+</nav>
+<div id="main_body" class="col-lg-11 col-sm-11 alert alert-dark" id= "msgbox" style="width:96%; margin-left:3.5%; margin-right:2.5%; height:95vh; ">
+    <h4 style="text-align:center;">Channel menu</h4>    <br> 
+    <h5 style="text-align:center;">{{message}}</h5> <br> 
+    <button type="button" class="btn btn-light" style="width:30%; margin-left:35%; margin-right:35%;"><a id="newChannel" class="nav-link" > Avaliable Channels</a></button><br>
+    <a class="nav-item"></a><br>
+        {% for channel in channels %}
+        <br>        <button type="button" class="btn btn-secondary" id="btn_{{channel}}" class="mySelectedStyle" style="width:30%; margin-left:35%; margin-right:35%;">
+        <a class="dropdown-item" id="select_channel" data-channel="{{channel}}" href="/channels/{{ channel }}">{{channel}}</a>
+        </button><br> 
+        {% endfor %}        
+        <br><button type="button" class="btn btn-dark" class="nav-item" style="width:30%; margin-left:35%; margin-right:35%;"><a id="newChannel" class="nav-link" href="/create_channel"> Create Channel</a></button>
+    </div>
+    </div>    
+{% endblock %}

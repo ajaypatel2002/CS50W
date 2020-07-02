@@ -1,0 +1,42 @@
+let myStyle = ['alert alert-primary', 'alert alert-success', 'alert alert-danger', 'alert alert-warning', 'alert alert-info', 'alert alert-light', 'alert alert-dark'];
+                    let divStyle = myShows[Math.floor(Math.random() * myStyle.length)];
+
+                    //div.setAttribute("class",divStyle);
+                    //primary,success,danger,warning,info,light,dark
+
+
+let mySelectedStyle = myStyle[Math.floor(Math.random() * myArray.length)];
+
+let myShows = ['Bones', 'Psych', 'Big Bang Theory', 'Mad Men', 
+'Breaking Bad', 'Modern Family', 'Game of Thrones', 'Dexter'];
+
+@app.route("add_message")
+def add_message():
+    msg=1
+    timenow=12
+    channel = session.get('current_channel')
+    username=session.get('username')
+    temp_channelWiseMessages=channelWiseMessages[channel]["msgs"]
+
+    if len(temp_channelWiseMessages) > 100:
+        # Pop the oldest message
+        temp_channelWiseMessages.popleft()
+    new_msg={len(temp_channelWiseMessages)+1: [username,timenow,msg]}
+    temp_channelWiseMessages.update(new_msg)
+    
+    return render_template("index.html")    
+    # Save 100 messages and pass them when a user joins a specific channel.
+    =====================
+to add messages when received in shocket io
+        channel=session.get('current_channel')
+    username=session.get('username')
+    msg_time=timenow
+    #================= Receive message with timenow and broadcast on the channel """
+    # Broadcast only to users on the same channel.
+    temp_channelWiseMessages=channelWiseMessages[channel]["msgs"]
+    len(temp_channelWiseMessages)
+    new_msg={len(temp_channelWiseMessages)+1: [username,msg_time,msg]}
+    temp_channelWiseMessages.update(new_msg)
+    data=channelWiseMessages[channel]
+
+    

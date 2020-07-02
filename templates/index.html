@@ -1,0 +1,114 @@
+
+{% extends "main_template.html" %}
+
+{% block head %}
+<script>  
+  document.addEventListener('DOMContentLoaded', () => 
+    {
+
+    
+      // By default, submit button is disabled
+    document.querySelector('#send_msg').disabled = true;
+  
+      // Enable button only if there is text in the input field
+    document.querySelector('#my_msg').onkeyup = () => 
+      {
+      if (document.querySelector('#my_msg').value.length > 0)
+        document.querySelector('#send_msg').disabled = false;
+      else
+        document.querySelector('#send_msg').disabled = true;
+      }          
+    document.querySelector('#my_msg').addEventListener("keydown", event => 
+      {
+        if (event.key == "Enter") 
+        {
+          document.getElementById("send_msg").click();
+        }
+      });
+
+  });
+</script>
+{% endblock %}
+{%block menu %}
+{% if session.username %}
+<script>
+    var my_username='{{session.username}}';
+    var my_selected_channel='{{session.current_channel}}';
+    localStorage.setItem('last_channel', "{{session.current_channel}}")
+    localStorage.setItem('username', "{{session.username}}")
+  
+</script>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+<div text-align="left">
+<a class="navbar-brand" href="#"><img src="../static/gappamar.png" width="60" height="60" alt="Gappamar"></a>
+
+<button type="button" class="btn btn-secondary">Channel: {{session.current_channel}}</button>
+<button type="button" id="user_login_btn" class="btn btn-warning"><a a href="/leave_channel">Leave</a></button>
+</div>
+<div>
+
+<button type="button" class="btn btn-success">User: {{session.username}}</button>
+<button type="button" id="user_logout_btn" class="btn btn-danger" ><a a href="/logout">Logout</a>  </button>
+</div>
+</nav>
+  {% else %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center custom-nav">
+    <a class="navbar-brand" href="#"><img src="../static/Slack_Logo.png" width="60" height="60" alt="Gappamar"></a>
+{% endif %}
+</nav>
+
+{% endblock %}
+{% block main %}
+<!--<div class="alert alert-dark" role="alert" style="width:96%; margin-left:1.5%; margin-right:1.5%; height:80vh">
+  <text align="center"><h6> selected channel: {{session.current_channel}}.... username: {{session.username }}</h6></text>-->
+  <div class="row">
+    <!--<div class="col-lg-3 col-sm-3 alert alert-dark" style="width:96%; margin-left:2%; margin-right:2%; height:80vh;    "></div>-->
+    <div class="col-lg-11 col-sm-11 alert alert-dark" id= "msgbox" style="width:97%; margin-left:3.5%; margin-right:1%; height:80vh;   ">
+      <div id="all_messages" class="alert alert-danger" role="alert" style="width:97%; margin-left:1%; margin-right:1%; height:56vh;   overflow-y: scroll; overscroll-behavior-y: contain; scroll-snap-type: y mandatory;">
+        
+        <div class="alert alert-primary" role="alert" style="width:50%; height:auto; margin-left:1%; margin-right:50%;">
+        welcome to {{ session.current_channel }}
+        </div>
+
+      {% if entry==1 %}
+      
+      {% set counter = 1 %}
+      
+      {% for key,p_values in messages.items() %}
+          {% if key =="msgs" %}
+              {% for key2, nested_value in p_values.items() %}
+              
+              {% if nested_value[0]==session.username %}
+              <div class="alert alert-primary" role="alert" style="width:80%; margin-left:20%; margin-right:0%;">
+                {{ nested_value[2] }} <br>{{ nested_value[0] }}- {{nested_value[1] }}
+              </div>
+
+              {% else %}
+
+              <div class="alert alert-secondary" role="alert" style="width:80%; margin-left:0%; margin-right:20%;">
+                {{ nested_value[2] }} <br>{{ nested_value[0] }}- {{nested_value[1] }}
+              </div>
+              
+              {% endif %}                       
+              
+              {% endfor %}
+          {% endif %} 
+      
+          {% set counter = counter + 1 %}
+      {% endfor %}
+      {% endif %} 
+      
+      </div>
+      <form id="new_msg">
+      <div class="row" style="margin-left:1%; margin-right: 3%;">
+          <div class="col-sm-8">
+            <textarea class="form-control"  style="text-align: left" id="my_msg" name="message" rows="2" cols="100" placeholder="Enter Your message here"></textarea>
+          </div>
+          <div class="col-sm-4 text-left button">
+            <button id="send_msg" class="btn btn-primary" style="width: 100%; height: 100%;">Send</button>
+          </div>
+      </div>
+      </form>
+    </div>
+</div> 
+{% endblock %}
